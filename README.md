@@ -77,7 +77,7 @@
 
 ### 📦 Standalone-версія
 
-Для збірки проєкту в єдиний HTML-файл (включаючи JS, CSS та вшитий SQL-код):
+Для збірки проекту в єдиний HTML-файл (включаючи JS, CSS та вшитий SQL-код):
 
 ```bash
 make build
@@ -92,29 +92,32 @@ make build
 ```text
 goit-rdb-hw-03/
 ├── backend/                    # 🐍 Ядро управління БД (Python API)
-│   ├── db_manager.py           # CLI-менеджер фабрики баз даних
-│   ├── dockerfile              # Конфігурація контейнера
-│   └── requirements.txt        # Залежності
+│   ├── main.py                 # FastAPI сервер (обробка SQL-запитів)
+│   ├── db_manager.py           # 🗄️ CLI-менеджер фабрики баз даних (Автомережа, Dump/Restore)
+│   ├── Dockerfile              # Конфігурація контейнера
+│   └── requirements.txt        # Залежності бекенду
 │
 ├── frontend/                   # 🌐 Клієнтська частина IDE (Vanilla JS)
-│   ├── css/                    # 🎨 UI стилі
-│   ├── js/                     # ⚙️ Логіка (6 модулів)
-│   ├── sql/                    
-│   │   └── default.sql         # 🏆 6 SQL-запитів рішення ДЗ №3
-│   └── index.html              
+│   ├── css/                    # 🎨 UI стилі (Tailwind)
+│   ├── dicts/                  # 📚 Словники для автозаповнення команд
+│   ├── js/                     # ⚙️ Логіка IDE (6 модулів)
+│   ├── locales/                # 🌍 Мовні пакети (uk.js, en.js)
+│   ├── sql/                    # 📜 Збережені SQL-скрипти
+│   │   └── default.sql         # 🏆 Запити для ДЗ №3
+│   └── index.html              # Головна точка входу IDE
 │
-├── data/                       # 📊 Навчальний датасет (CSV-файли)
-│   ├── categories.csv
-│   ├── customers.csv
+├── data/                       # 📊 Навчальний набір даних (CSV-файли)
+│   ├── categories.csv          
 │   ├── products.csv
-│   ├── shippers.csv
-│   └── ... (інші таблиці)
+│   └── ... (інші 6 таблиць)
 │
-├── builder.py                  # 🛠️ Бандлер для Standalone-версії
-├── docker-compose.yml          # 🐳 Docker інфраструктура
-├── Makefile                    # 🪄 Оркестратор (make start, make build)
-├── hw_submission.html          # 📦 Зібраний All-in-One файл (генерується 'make build')
-└── README.md                   # 📖 Документація
+├── .venv/                      # 📦 Ізольоване середовище Python (Генерується автоматично)
+├── databases.json              # 💾 Динамічний конфіг стану активних БД (Генерується менеджером)
+├── builder.py                  # 🛠️ Бандлер для збірки Standalone-версії (HTML-архіву)
+├── docker-compose.yml          # 🐳 Docker інфраструктура (API + Adminer)
+├── Makefile                    # 🪄 Оркестратор (make start, make db-add, make db-dump)
+├── hw_submission.html          # 📦 Зібраний All-in-One файл
+└── README.md                   # 📖 Документація проекту
 ```
 
 ### ER-Діаграма Датасету (Mermaid)
