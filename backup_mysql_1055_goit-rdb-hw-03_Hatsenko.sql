@@ -2,6 +2,8 @@ mysqldump: [Warning] Using a password on the command line interface can be insec
 Warning: A partial dump from a server that has GTIDs will by default include the GTIDs of all transactions, even those that changed suppressed parts of the database. If you don't want to restore GTIDs, pass --set-gtid-purged=OFF. To make a complete dump, pass --all-databases --triggers --routines --events. 
 Warning: A dump from a server that has GTIDs enabled will by default include the GTIDs of all transactions, even those that were executed during its extraction and might not be represented in the dumped data. This might result in an inconsistent data dump. 
 In order to ensure a consistent backup of the database, pass --single-transaction or --lock-all-tables or --source-data. 
+mysqldump: Error: 'SELECT command denied to user 'admin'@'localhost' for table 'column_masking_policy'' when trying to dump masking policies
+mysqldump: Error: 'Access denied; you need (at least one of) the PROCESS privilege(s) for this operation' when trying to dump tablespaces
 -- MySQL dump 10.13  Distrib 9.7.0, for Linux (x86_64)
 --
 -- Host: localhost    Database: stand_db
@@ -25,9 +27,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'dce9f4ec-4a66-11f1-89a8-dae48e78ab80:1-25';
-mysqldump: Error: 'SELECT command denied to user 'admin'@'localhost' for table 'column_masking_policy'' when trying to dump masking policies
-mysqldump: Error: 'Access denied; you need (at least one of) the PROCESS privilege(s) for this operation' when trying to dump tablespaces
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'dce9f4ec-4a66-11f1-89a8-dae48e78ab80:1-27';
 
 --
 -- Table structure for table `categories`
@@ -37,9 +37,10 @@ DROP TABLE IF EXISTS `categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categories` (
-  `id` int DEFAULT NULL,
+  `id` int NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -172,7 +173,9 @@ CREATE TABLE `products` (
   `supplier_id` int DEFAULT NULL,
   `category_id` int DEFAULT NULL,
   `unit` varchar(255) DEFAULT NULL,
-  `price` float DEFAULT NULL
+  `price` float DEFAULT NULL,
+  KEY `fk_products_categories` (`category_id`),
+  CONSTRAINT `fk_products_categories` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -249,4 +252,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-07 23:42:07
+-- Dump completed on 2026-05-08  0:21:32
